@@ -22,5 +22,4 @@ public class ProviderController {
         System.out.println("------------->我是提供服务提供者,端口号为" + port);
         return "我是提供服务提供者,端口号为" + port;
     }
-
 }

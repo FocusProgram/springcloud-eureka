@@ -1,5 +1,6 @@
 package com.example.springcloudeurekaconsumer.config;
 
+import com.example.springcloudeurekaconsumer.rule.MyRule;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,5 +22,21 @@ public class BeanConfig {
     @LoadBalanced
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
+    }
+
+//    /**
+//     * 选择随机算法
+//     **/
+//    @Bean
+//    public RandomRule getRandomRule(){
+//        return new RandomRule();
+//    }
+
+    /**
+     * 自定义负载均衡算法（调用五次）
+     **/
+    @Bean
+    public MyRule getMyRule() {
+        return new MyRule();
     }
 }
