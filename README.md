@@ -3,11 +3,24 @@
 **Eureka**
 
 ---
-#### 1. 什么是Eureka?
+
+- **文章目录**
+
+* [1\. 什么是Eureka?](#1-%E4%BB%80%E4%B9%88%E6%98%AFeureka)
+* [2\. Eureka的组成?](#2-eureka%E7%9A%84%E7%BB%84%E6%88%90)
+* [3\. SpringCloud集成Eureka](#3-springcloud%E9%9B%86%E6%88%90eureka)
+  * [3\.1 模块](#31-%E6%A8%A1%E5%9D%97)
+  * [3\.2 功能模块配置](#32-%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE)
+    * [3\.2\.1 eureka\-server配置](#321-eureka-server%E9%85%8D%E7%BD%AE)
+    * [3\.2\.2 eureka\-provider配置](#322-eureka-provider%E9%85%8D%E7%BD%AE)
+    * [3\.2\.3 eureka\-consumer配置](#323-eureka-consumer%E9%85%8D%E7%BD%AE)
+* [4\. Eureka和Zookeeper对比](#4-eureka%E5%92%8Czookeeper%E5%AF%B9%E6%AF%94)
+
+# 1. 什么是Eureka?
 
 > [Eureka](https://github.com/Netflix/eureka) 是一个基于 REST (REST)的服务，主要用于 AWS 云中定位服务，用于中间层服务器的负载平衡和故障转移。 我们称这个服务为 Eureka 服务器。 Eureka 还带有一个基于 java 的客户机组件—— Eureka Client，它使得与服务的交互更加容易。 客户机还有一个内置的负载平衡器，可以进行基本的循环负载平衡。 在 Netflix，一个更加复杂的负载平衡器包装了 Eureka，以提供基于流量、资源使用、错误条件等几个因素的加权负载平衡，从而提供更好的弹性。
 
-#### 2. Eureka的组成?
+# 2. Eureka的组成?
 
 ![](https://gitee.com/FocusProgram/PicGo/raw/master/20200310094547.png)
 
@@ -19,11 +32,11 @@
 
 > 为了让Eureka Server知道客户端是否还活着，引入了心跳机制，即每隔一定时间（默认30s）都会告知Eureka Server我还活着，防止“剔除任务”将服务实例从服务列表中排除出去。如果发现一个服务死了，Eureka不会将其注册信息直接删除而是尽可能当前实例的注册信息保护起来即进入自我保护阶段（默认自我保护为开启，可以通过eureka.server.enable-self-preservation=false关闭自我保护）。SpringCloud的一些其它模块（比如Ribbon、Zuul等）可以通过Eureka Server来发现系统中其他微服务，做相关的逻辑处理。
 
-#### 3. SpringCloud集成Eureka
+# 3. SpringCloud集成Eureka
 
 参考地址 [https://github.com/FocusProgram/springcloud-eureka](https://github.com/FocusProgram/springcloud-eureka)
 
-##### 3.1 模块
+## 3.1 模块
 
 | Sever Name                         | Port | Function    |
 |------------------------------------|------|-------------|
@@ -33,9 +46,9 @@
 | springcloud\-eureka\-provider\-two | 8002 | 客户端2（服务提供者） |
 | springcloud\-eureka\-consumer      | 7000 | 客户端（服务消费者）  |
 
-##### 3.2 功能模块配置
+## 3.2 功能模块配置
 
-###### 3.2.1 eureka-server配置
+### 3.2.1 eureka-server配置
 
 1. **springcloud-eureka-server-one**和**springcloud-eureka-server-two**引入依赖
 
@@ -114,7 +127,7 @@ public class SpringcloudEurekaServerTwoApplication {
 
 ![](https://gitee.com/FocusProgram/PicGo/raw/master/20200310144134.png)
 
-###### 3.2.2 eureka-provider配置
+### 3.2.2 eureka-provider配置
 
 1. **springcloud-eureka-provider-one**和**springcloud-eureka-provider-two**引入依赖
 
@@ -221,7 +234,7 @@ public class SpringcloudEurekaProviderTwoApplication {
 
 ![](https://gitee.com/FocusProgram/PicGo/raw/master/20200310145142.png)
 
-###### 3.2.3 eureka-consumer配置
+### 3.2.3 eureka-consumer配置
 
 1. **springcloud-eureka-consumer**引入依赖
 
@@ -453,7 +466,7 @@ public class SpringcloudEurekaConsumerApplication {
 
 ![](https://gitee.com/FocusProgram/PicGo/raw/master/20200310150248.png)
   
-#### 4. Eureka和Zookeeper对比
+# 4. Eureka和Zookeeper对比
 
 > Eureka是基于AP原则构建，而ZooKeeper是基于CP原则构建；ZooKeeper基于CP，不保证高可用，如果zookeeper正在选举或者Zookeeper集群中半数以上机器不可用，那么将无法获得数据。Eureka基于AP，能保证高可用，即使所有机器都挂了，也能拿到本地缓存的数据。作为注册中心，其实配置是不经常变动的，只有发版和机器出故障时会变。对于不经常变动的配置来说，CP是不合适的，而AP在遇到问题时可以用牺牲一致性来保证可用性，既返回旧数据，缓存数据。
 
